@@ -9,24 +9,33 @@ Output = Tuple[State, int, bool]
 
 class MountainCar:
 
+    position_bound = (-1.2, 0.6)
+    velocity_bound = (-0.07, 0.07)
+    position_range = abs(position_bound[0] - position_bound[1])
+    velocity_range = abs(velocity_bound[0] - velocity_bound[1])
+
     def __init__(self) -> None:
         self.reset()
 
     def reset(self) -> Output:
         self.position = -0.6 + random.random() * 0.2
         self.velocity = 0.0
-        self.checkState()
-        return (self.position, self.velocity), 1 - 2 * int(self.is_final_state()), self.is_final_state()
+        return (self.position, self.velocity), -1, False
 
     def step(self, action: Actions) -> Output:
-        self.velocity += 0.001 * action - 0.0025 * cos(3 * self.position)
-        self.position += self.velocity
-        self.checkState()
-        return (self.position, self.velocity), 1 - 2 * int(self.is_final_state()), self.is_final_state()
+        self.velocity = self.bound_velocity(self.velocity + 0.001 * action - 0.0025 * cos(3 * self.position))
+        self.position = self.bound_position(self.position + self.velocity)
+        return (self.position, self.velocity), self.reward(), self.is_final_state()
 
     def is_final_state(self) -> bool:
-        return self.position >= 0.6
+        return self.position >= MountainCar.position_bound[1]
 
-    def checkState(self) -> None:
-        assert -1.2 <= self.position <= 0.6, f'Position out of bounds. {self.position} not in [-1.2, 0.6]'
-        assert -0.07 <= self.velocity <= 0.07, f'Velocity out of bounds. {self.velocity} not in [-0.07, 0.07]'
+    def bound_position(self, position: float) -> float:
+        self.velocity *= int(position < MountainCar.position_bound[0])  # set velocity to zero if out of bounds
+        return max(MountainCar.position_bound[0], position)
+
+    def bound_velocity(self, velocity: float) -> float:
+        return min(MountainCar.velocity_bound[1], max(MountainCar.velocity_bound[0], velocity))
+
+    def reward(self) -> int:
+        return 1 - 2 * int(self.is_final_state())

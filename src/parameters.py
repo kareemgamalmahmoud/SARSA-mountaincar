@@ -19,7 +19,7 @@ SARSA_LEARNING_RATE = 0.01
 SARSA_LOSS_FUNCTION = mse  # kl_divergence
 SARSA_ACTIVATION_FUNCTION = relu  # linear, relu, sigmoid, or tanh
 SARSA_OPTIMIZER = Adam  # SGD, Adagrad, Adam, or RMSprop
-SARSA_DIMENSIONS = (100, 3)
+SARSA_DIMENSIONS = (100, 1)
 
 # TOPP parameters
 ANETS_TO_BE_CACHED = 6
