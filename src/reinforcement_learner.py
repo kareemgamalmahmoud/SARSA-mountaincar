@@ -3,12 +3,12 @@ from time import time
 from typing import Tuple
 
 import numpy as np
-from world.simulated_world_factory import SimulatedWorldFactory
-
-import parameters
 from ANET import ANET
 from game import Game
 from MCTS import MCTS
+from world.simulated_world_factory import SimulatedWorldFactory
+
+import parameters
 from visualize import Visualize
 
 

@@ -16,7 +16,7 @@ ANET_LEARNING_RATE = 0.01
 ANET_LOSS_FUNCTION = mse  # deepnet_cross_entropy, kl_divergence
 ANET_ACTIVATION_FUNCTION = relu  # linear, relu, sigmoid, or tanh
 ANET_OPTIMIZER = Adam  # SGD, Adagrad, Adam, or RMSprop
-ANET_DIMENSIONS = (STATE_SIZE, 256, 128, 64, NUMBER_OF_ACTIONS)
+# ANET_DIMENSIONS = (STATE_SIZE, 256, 128, 64, NUMBER_OF_ACTIONS)
 
 # TOPP parameters
 ANETS_TO_BE_CACHED = 6

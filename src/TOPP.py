@@ -1,7 +1,8 @@
 from os import walk
 
-import parameters
 from ANET import ANET
+
+import parameters
 from reinforcement_learner import ReinforcementLearner
 from visualize import Visualize
 

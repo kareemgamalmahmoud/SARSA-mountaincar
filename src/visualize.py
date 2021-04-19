@@ -1,7 +1,7 @@
 from typing import List
-
+import numpy as np
 import matplotlib.pyplot as plt
-
+import math
 import parameters
 
 
@@ -32,15 +32,21 @@ def plot_epsilon(epsilon_history):
     plt.close()
 
 
-def plot_win_statistics(statistics):
-    plt.title('TOPP results')
-    plt.xlabel('Agent')
-    plt.xticks(rotation=45)
-    plt.ylabel('wins')
-    agents = statistics.keys()
-    wins = statistics.values()
-    plt.bar(agents, wins)
+def plot_track():
+    def y(x):
+        return np.cos(3 * (x + math.pi / 2))
+
+    plt.title('Track')
+    plt.xlabel('x')
+    plt.ylabel('y')
+    x = np.arange(-1.2, 0.6, 0.01)
+
+    plt.plot(x, y(x))
 
     plt.tight_layout()
-    plt.savefig('plots/TOPP_results.png')
+    plt.savefig('plots/track.png')
     plt.close()
+
+
+if __name__ == "__main__":
+    plot_track()
