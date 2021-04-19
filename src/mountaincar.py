@@ -16,13 +16,13 @@ class MountainCar:
         self.position = -0.6 + random.random() * 0.2
         self.velocity = 0.0
         self.checkState()
-        return (self.position, self.velocity), int(self.is_final_state()), self.is_final_state()
+        return (self.position, self.velocity), 1 - 2 * int(self.is_final_state()), self.is_final_state()
 
     def step(self, action: Actions) -> Output:
         self.velocity += 0.001 * action - 0.0025 * cos(3 * self.position)
         self.position += self.velocity
         self.checkState()
-        return (self.position, self.velocity), int(self.is_final_state()), self.is_final_state()
+        return (self.position, self.velocity), 1 - 2 * int(self.is_final_state()), self.is_final_state()
 
     def is_final_state(self) -> bool:
         return self.position >= 0.6
