@@ -1,5 +1,0 @@
-Verification:
-66.0
-64.0
-
-Official:

@@ -1,8 +1,0 @@
-Verification:
-72
-68
-74
-72
-
-Official:
-36.5 - N
