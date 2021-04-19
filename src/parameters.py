@@ -7,16 +7,19 @@ FRAME_DELAY = 0.5
 RUN_TRAINING = False
 
 # RL parameters
-EPISODES = 120
+EPISODES = 100
 
-# ANET
-ANET_EPSILON = 0.01
-ANET_EPSILON_DECAY = 1
-ANET_LEARNING_RATE = 0.01
-ANET_LOSS_FUNCTION = mse  # deepnet_cross_entropy, kl_divergence
-ANET_ACTIVATION_FUNCTION = relu  # linear, relu, sigmoid, or tanh
-ANET_OPTIMIZER = Adam  # SGD, Adagrad, Adam, or RMSprop
-# ANET_DIMENSIONS = (STATE_SIZE, 256, 128, 64, NUMBER_OF_ACTIONS)
+# SARSA
+SARSA_EPSILON = 0.01
+SARSA_EPSILON_DECAY = 1
+SARSA_DISCOUNT_FACTOR = 0.9
+SARSA_TRACE_DECAY = 0.9
+
+SARSA_LEARNING_RATE = 0.01
+SARSA_LOSS_FUNCTION = mse  # kl_divergence
+SARSA_ACTIVATION_FUNCTION = relu  # linear, relu, sigmoid, or tanh
+SARSA_OPTIMIZER = Adam  # SGD, Adagrad, Adam, or RMSprop
+SARSA_DIMENSIONS = (100, 3)
 
 # TOPP parameters
 ANETS_TO_BE_CACHED = 6

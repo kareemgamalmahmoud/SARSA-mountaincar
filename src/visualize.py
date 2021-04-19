@@ -1,7 +1,9 @@
-from typing import List
-import numpy as np
-import matplotlib.pyplot as plt
 import math
+from typing import List
+
+import matplotlib.pyplot as plt
+import numpy as np
+
 import parameters
 
 
