@@ -1,0 +1,16 @@
+root = true
+
+# For all files we use unix-compatible line breaks
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+# 4-space indents
+[*.py]
+indent_style = space
+indent_size = 4
+
+# For Makefile, release.Jenkinsfile and Dockerfile files only
+[{Makefile, release.Jenkinsfile, Dockerfile}]
+indent_style = tab
+indent_size = 4

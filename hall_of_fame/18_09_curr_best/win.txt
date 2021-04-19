@@ -1,0 +1,8 @@
+Verification:
+80
+88
+80
+
+Official:
+43.5 - LM
+47.0 - N
