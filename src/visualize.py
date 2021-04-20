@@ -5,18 +5,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.animation import FuncAnimation
 
-import parameters
 from mountaincar import MountainCar
-
-# Global config
-plt.style.use('ggplot')
 
 
 def animate_track():
 
     fig, ax = plt.subplots(figsize=(6, 4))
     ax.set(xlim=MountainCar.position_bound, ylim=(-1.1, 1.1))
-    ax.set_facecolor('white')
 
     plt.title('Track')
     plt.ylabel('y')
@@ -75,7 +70,7 @@ def plot_track():
     plt.title('Track')
     plt.xlabel('x')
     plt.ylabel('y')
-    x = np.arange(-1.2, 0.6, 0.01)
+    x = np.linspace(MountainCar.position_bound[0], MountainCar.position_bound[1], 91)
 
     plt.plot(x, y(x))
 
@@ -90,3 +85,4 @@ def y(x):
 
 if __name__ == "__main__":
     animate_track()
+    plot_track()
