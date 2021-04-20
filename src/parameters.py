@@ -21,6 +21,5 @@ SARSA_ACTIVATION_FUNCTION = relu  # linear, relu, sigmoid, or tanh
 SARSA_OPTIMIZER = Adam  # SGD, Adagrad, Adam, or RMSprop
 SARSA_DIMENSIONS = (100, 1)
 
-# TOPP parameters
-ANETS_TO_BE_CACHED = 6
-NUMBER_OF_GAMES = 10
+# Misc. parameters
+MODELS_TO_BE_CACHED = 10
