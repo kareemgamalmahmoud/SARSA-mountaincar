@@ -3,7 +3,6 @@ import os
 
 import parameters
 from SARSA import SARSA
-from TOPP import TOPP
 
 
 def clear_models():
@@ -13,10 +12,10 @@ def clear_models():
 
 
 if __name__ == "__main__":
-    if parameters.RUN_TRAINING:
-        clear_models()
+    # if parameters.RUN_TRAINING:
+    #     clear_models()
         rl_learner = SARSA()
         rl_learner.run()
 
-    topp = TOPP()
-    topp.run()
+    # topp = TOPP()
+    # topp.run()

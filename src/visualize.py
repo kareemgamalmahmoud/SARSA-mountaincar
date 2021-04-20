@@ -8,7 +8,7 @@ from matplotlib.animation import FuncAnimation
 from mountaincar import MountainCar
 
 
-def animate_track():
+def animate_track() -> None:
 
     fig, ax = plt.subplots(figsize=(6, 4))
     ax.set(xlim=MountainCar.position_bound, ylim=(-1.1, 1.1))
@@ -39,7 +39,18 @@ def animate_track():
     plt.close()
 
 
-def plot_loss(loss_history: List[int]):
+def plot_steps_per_episode(steps_per_episode: List[int]) -> None:
+    plt.title('Steps per episode')
+    plt.ylabel('Steps')
+    plt.xlabel('Episode')
+    episodes = np.linspace(1, len(steps_per_episode) + 1, len(steps_per_episode))
+    plt.scatter(episodes, steps_per_episode)
+
+    plt.savefig('plots/steps_per_episode.png')
+    plt.close()
+
+
+def plot_loss(loss_history: List[int]) -> None:
     plt.title('Training loss')
     plt.ylabel('Loss')
     plt.xlabel('Episode')
@@ -49,7 +60,7 @@ def plot_loss(loss_history: List[int]):
     plt.close()
 
 
-def plot_epsilon(epsilon_history):
+def plot_epsilon(epsilon_history) -> None:
     plt.title('Epsilon')
     plt.xlabel('Time step')
     plt.ylabel('$\epsilon$')
@@ -66,7 +77,7 @@ def plot_epsilon(epsilon_history):
     plt.close()
 
 
-def plot_track():
+def plot_track() -> None:
     plt.title('Track')
     plt.xlabel('x')
     plt.ylabel('y')

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import random
-from typing import Optional, Tuple
+from typing import Optional
 
 import numpy as np
 import tensorflow as tf
@@ -10,7 +10,7 @@ from keras.layers import Dense, Input
 from keras.models import Sequential
 
 import parameters
-from src.mountaincar import Action, State
+from mountaincar import Action, State
 
 
 class Agent:
