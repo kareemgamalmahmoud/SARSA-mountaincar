@@ -15,7 +15,7 @@ plt.style.use('ggplot')
 def animate_track():
 
     fig, ax = plt.subplots(figsize=(6, 4))
-    ax.set(xlim=MountainCar.position_bound, ylim=(-1, 1))
+    ax.set(xlim=MountainCar.position_bound, ylim=(-1.1, 1.1))
     ax.set_facecolor('white')
 
     plt.title('Track')
@@ -40,7 +40,7 @@ def animate_track():
     plt.tight_layout()
     plt.draw()
     plt.show()
-    anim.save('models/track.gif', writer='imagemagick')
+    anim.save('plots/track.gif', writer='imagemagick')
     plt.close()
 
 
