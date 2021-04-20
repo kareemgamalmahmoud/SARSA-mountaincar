@@ -1,10 +1,47 @@
 import math
+from mountaincar import MountainCar
 from typing import List
 
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.animation import FuncAnimation
 
 import parameters
+
+# Global config
+plt.style.use('ggplot')
+
+
+def animate_track():
+
+    fig, ax = plt.subplots(figsize=(6, 4))
+    ax.set(xlim=MountainCar.position_bound, ylim=(-1, 1))
+    ax.set_facecolor('white')
+
+    plt.title('Track')
+    plt.ylabel('y')
+    plt.xlabel('x')
+
+    x = np.linspace(MountainCar.position_bound[0], MountainCar.position_bound[1], 91)
+    t = np.linspace(1, 100, 91)
+    y_x = y(x)
+
+    plt.plot(x, y_x)
+
+    point = ax.plot([0], [0], color='green', marker='o')[0]
+    point.set_data(0, 0)
+
+    def animate(i):
+        point.set_data(x[i], y_x[i])
+        return point
+
+    anim = FuncAnimation(fig, animate, interval=100, frames=len(t) - 1)
+
+    plt.tight_layout()
+    plt.draw()
+    plt.show()
+    anim.save('models/track.gif', writer='imagemagick')
+    plt.close()
 
 
 def plot_loss(loss_history: List[int]):
@@ -35,9 +72,6 @@ def plot_epsilon(epsilon_history):
 
 
 def plot_track():
-    def y(x):
-        return np.cos(3 * (x + math.pi / 2))
-
     plt.title('Track')
     plt.xlabel('x')
     plt.ylabel('y')
@@ -50,5 +84,9 @@ def plot_track():
     plt.close()
 
 
+def y(x):
+    return np.cos(3 * (x + math.pi / 2))
+
+
 if __name__ == "__main__":
-    plot_track()
+    animate_track()

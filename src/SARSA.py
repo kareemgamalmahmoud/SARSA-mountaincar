@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import random
-from src.mountaincar import Actions
 from typing import Optional, Tuple
 
 import numpy as np
@@ -12,6 +11,7 @@ from keras.layers import Dense, Input
 from keras.models import Sequential
 
 import parameters
+from src.mountaincar import Actions
 
 
 class SARSA:
