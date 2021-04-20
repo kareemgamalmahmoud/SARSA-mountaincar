@@ -45,4 +45,6 @@ class SARSA:
         if parameters.VISUALIZE_GAMES:
             print('Showing one episode with the greedy strategy.')
             self.agent.epsilon = 0
-            self.run_one_episode()
+            steps = self.run_one_episode()
+            print(f'Episode completed in {steps} steps.')
+            visualize.animate_track()

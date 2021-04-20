@@ -23,19 +23,19 @@ class MountainCar:
         return (self.position, self.velocity), -1, False
 
     def step(self, action: Action) -> Output:
-        self.velocity = self.bound_velocity(self.velocity + 0.001 * action - 0.0025 * cos(3 * self.position))
-        self.position = self.bound_position(self.position + self.velocity)
-        return (self.position, self.velocity), self.reward(), self.is_final_state()
+        self.velocity = self.__bound_velocity(self.velocity + 0.001 * action - 0.0025 * cos(3 * self.position))
+        self.position = self.__bound_position(self.position + self.velocity)
+        return (self.position, self.velocity), self.get_reward(), self.is_final_state()
 
     def is_final_state(self) -> bool:
         return self.position >= MountainCar.position_bound[1]
 
-    def bound_position(self, position: float) -> float:
+    def __bound_position(self, position: float) -> float:
         self.velocity *= int(position < MountainCar.position_bound[0])  # set velocity to zero if out of bounds
         return max(MountainCar.position_bound[0], position)
 
-    def bound_velocity(self, velocity: float) -> float:
+    def __bound_velocity(self, velocity: float) -> float:
         return min(MountainCar.velocity_bound[1], max(MountainCar.velocity_bound[0], velocity))
 
-    def reward(self) -> int:
+    def get_reward(self) -> int:
         return 1 - 2 * int(self.is_final_state())
