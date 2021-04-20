@@ -16,7 +16,7 @@ SARSA_DISCOUNT_FACTOR = 0.9
 SARSA_TRACE_DECAY = 0.9
 
 SARSA_LEARNING_RATE = 0.01
-SARSA_LOSS_FUNCTION = mse  # kl_divergence
+SARSA_LOSS_FUNCTION = mse # "A typical solution involves mean squared error as the loss function for your critic network"
 SARSA_ACTIVATION_FUNCTION = relu  # linear, relu, sigmoid, or tanh
 SARSA_OPTIMIZER = Adam  # SGD, Adagrad, Adam, or RMSprop
 SARSA_DIMENSIONS = (100, 1)
