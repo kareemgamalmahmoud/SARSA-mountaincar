@@ -1,9 +1,9 @@
 from os import walk
 
 from ANET import ANET
+from reinforcement_learner import ReinforcementLearner
 
 import parameters
-from reinforcement_learner import ReinforcementLearner
 from visualize import Visualize
 
 

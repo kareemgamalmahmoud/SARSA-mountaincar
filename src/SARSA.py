@@ -1,6 +1,6 @@
 import parameters
-from mountaincar import MountainCar
 from Agent import Agent
+from mountaincar import MountainCar
 
 
 class SARSA:
@@ -43,5 +43,5 @@ class SARSA:
 
         if parameters.VISUALIZE_GAMES:
             print('Showing one episode with the greedy strategy.')
-            self.SARSA.epsilon = 0
+            self.agent.epsilon = 0
             self.run_one_episode()

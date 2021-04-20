@@ -1,5 +1,4 @@
 import math
-from mountaincar import MountainCar
 from typing import List
 
 import matplotlib.pyplot as plt
@@ -7,6 +6,7 @@ import numpy as np
 from matplotlib.animation import FuncAnimation
 
 import parameters
+from mountaincar import MountainCar
 
 # Global config
 plt.style.use('ggplot')
