@@ -2,7 +2,7 @@ import random
 from math import cos
 from typing import Literal, Tuple, Union
 
-Actions = Union[Literal[-1], Literal[0], Literal[1]]
+Action = Union[Literal[-1], Literal[0], Literal[1]]
 State = Tuple[float, float]
 Output = Tuple[State, int, bool]
 
@@ -22,7 +22,7 @@ class MountainCar:
         self.velocity = 0.0
         return (self.position, self.velocity), -1, False
 
-    def step(self, action: Actions) -> Output:
+    def step(self, action: Action) -> Output:
         self.velocity = self.bound_velocity(self.velocity + 0.001 * action - 0.0025 * cos(3 * self.position))
         self.position = self.bound_position(self.position + self.velocity)
         return (self.position, self.velocity), self.reward(), self.is_final_state()

@@ -2,7 +2,7 @@ import glob
 import os
 
 import parameters
-from reinforcement_learner import ReinforcementLearner
+from SARSA import SARSA
 from TOPP import TOPP
 
 
@@ -15,7 +15,7 @@ def clear_models():
 if __name__ == "__main__":
     if parameters.RUN_TRAINING:
         clear_models()
-        rl_learner = ReinforcementLearner()
+        rl_learner = SARSA()
         rl_learner.run()
 
     topp = TOPP()
