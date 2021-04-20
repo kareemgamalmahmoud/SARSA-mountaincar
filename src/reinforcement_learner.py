@@ -22,8 +22,9 @@ class ReinforcementLearner:
         self.episodes = parameters.EPISODES
         self.SARSA = SARSA()
         self.simulated_world = MountainCar()
+        self.steps_per_episode = []
 
-    def run_one_episode(self, max_steps: int = 1000) -> None:
+    def run_one_episode(self, max_steps: int = 1000) -> int:
         state, reward, done = self.simulated_world.reset()
         action = self.SARSA.choose_epsilon_greedy(state)
 
@@ -37,6 +38,7 @@ class ReinforcementLearner:
 
             state, action = next_state, next_action
             steps += 1
+        return steps
 
     def run(self) -> None:
         """
@@ -45,7 +47,8 @@ class ReinforcementLearner:
         """
         for episode in range(self.episodes):
             print('Episode:', episode + 1)
-            self.run_one_episode()
+            steps = self.run_one_episode()
+            self.steps_per_episode.append(steps)
 
         print('Training completed.')
         # Plotting ...
