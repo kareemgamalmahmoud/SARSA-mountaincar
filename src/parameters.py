@@ -23,3 +23,10 @@ SARSA_DIMENSIONS = (100, 1)
 
 # Misc. parameters
 MODELS_TO_BE_CACHED = 10
+
+# TileEncoder parameters:
+SIZE_OF_TILING_X = 4
+SIZE_OF_TILING_Y = 4
+NUM_OF_TILINGS = 3
+X_RANGE = [-1.2, 0.6]
+Y_RANGE = [-0.07, 0.07] 
