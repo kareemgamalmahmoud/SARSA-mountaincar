@@ -7,8 +7,8 @@ FRAME_DELAY = 0.5
 RUN_TRAINING = False
 
 # RL parameters
-EPISODES = 100
-CACHING_INTERVAL = 10
+EPISODES = 1
+CACHING_INTERVAL = 1
 
 # Domain & TileEncoder parameters
 SIZE_OF_TILING_X = 4
