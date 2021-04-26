@@ -24,6 +24,7 @@ class Agent:
         self.discount_factor = parameters.SARSA_DISCOUNT_FACTOR
         self.trace_decay = parameters.SARSA_TRACE_DECAY
         self.encoder = TileEncoder()
+        self.encoder.visualize_tilings()
 
         if model_path is None:
             self.learning_rate = parameters.SARSA_LEARNING_RATE
@@ -83,7 +84,7 @@ class Agent:
     def choose_greedy(self, state: State) -> Action:
         actions = []
         for action in Agent.actions:
-            actions.append(float(self.Q(tf.convert_to_tensor([np.hstack((self.encoder.tile_encode(state), [action]))]))))  # type: ignore
+            actions.append(float(self.Q(tf.convert_to_tensor([np.hstack((self.encoder.tile_encode(state), action))]))))  # type: ignore
         return Agent.actions[np.argmax(actions)]
 
     def choose_stochastic(self, state: State, temperature: int = 1) -> Action:
@@ -96,8 +97,8 @@ class Agent:
         """Updates eligibilities, then the value function."""
 
         with tf.GradientTape(persistent=True) as tape:
-            target = reward + tf.multiply(self.discount_factor, self.Q(tf.convert_to_tensor([*self.encoder.tile_encode(next_state), next_action])))
-            prediction = self.Q(tf.convert_to_tensor([*self.encoder.tile_encode(state), action]))
+            target = reward + tf.multiply(self.discount_factor, self.Q(tf.convert_to_tensor([np.hstack((self.encoder.tile_encode(next_state), next_action))])))  # type: ignore
+            prediction = self.Q(tf.convert_to_tensor([np.hstack((self.encoder.tile_encode(state), action))]))  # type: ignore
             loss = self.Q.compiled_loss(target, prediction)
             td_error = target - prediction
 
@@ -117,6 +118,9 @@ class Agent:
         self.eligibilities = []
         for weights in self.Q.trainable_weights:
             self.eligibilities.append(tf.zeros(weights.shape))
+
+    def exit(self) -> None:
+        pass
 
     def __str__(self) -> str:
         return self.name

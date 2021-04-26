@@ -32,13 +32,13 @@ class TileEncoder:
         num_tilings = self.num_of_tilings
 
         tiling_specs = []
-        offset_x = (low[0] - high[0]) / (num_tilings * (num_tiles[0] - 1))
-        offset_y = (low[1] - high[1]) / (num_tilings * (num_tiles[1] - 1))
+        offset_x = (low[0] - high[0]) / (num_tilings * num_tiles[0])
+        offset_y = (low[1] - high[1]) / (num_tilings * num_tiles[1])
 
-        for i in range(num_tilings - 1):
+        for i in range(num_tilings):
             tiling_specs.append(((num_tiles), (offset_x, offset_y)))
-            offset_x -= (low[0] - high[0]) / (num_tilings * (num_tiles[0] - 1))
-            offset_y -= (low[1] - high[1]) / (num_tilings * (num_tiles[1] - 1))
+            offset_x -= (low[0] - high[0]) / (num_tilings * num_tiles[0])
+            offset_y -= (low[1] - high[1]) / (num_tilings * num_tiles[1])
             print(tiling_specs)
             print(offset_x)
             print(offset_y)
@@ -77,10 +77,9 @@ class TileEncoder:
         for i in range(len(encoded_state[0])):
             index = self.coordinate_to_index(encoded_state[i][0], encoded_state[i][1])
             tiling_features[i][index] = 1
-        feature_vector = (np.array(tiling_features)).flatten()
-        return feature_vector
+        return np.array(tiling_features).flatten()
 
-    def visualize_tilings(self, tilings):
+    def visualize_tilings(self, tilings=None):
         """Plot each tiling as a grid."""
         if tilings is None:
             tilings = self.tilings
@@ -103,5 +102,4 @@ class TileEncoder:
         ax.set_title("Tilings")
         plt.xlim(self.low[0], self.high[0])
         plt.ylim(self.low[1], self.high[1])
-        plt.show()
-        return ax  # return Axis object to draw on later, if needed
+        plt.savefig('plots/tiles.png')

@@ -41,6 +41,7 @@ class SARSA:
 
         print('Training completed.')
         visualize.plot_steps_per_episode(self.steps_per_episode)
+        self.agent.exit()
 
         if parameters.VISUALIZE_GAMES:
             print('Showing one episode with the greedy strategy.')
