@@ -32,8 +32,7 @@ def animate_track(state_action_history: List[Tuple[float, Action]], filename: Op
     def animate(i):
         ax.patches.pop(0)
         point.set_data(state_history[i], y_t[i])
-        a = ax.add_patch(FancyArrowPatch(
-            (state_history[i], y_t[i]), (state_history[i] - 0.1 * action_history[i], y_t[i]), color='green', arrowstyle=ArrowStyle("->", head_length=1.5, head_width=1.5)))
+        a = ax.add_patch(FancyArrowPatch((state_history[i], y_t[i]), (state_history[i] + 0.1 * action_history[i], y_t[i]), color='green', arrowstyle=ArrowStyle("->", head_length=1.5, head_width=1.5)))
         return point
 
     anim = FuncAnimation(fig, animate, interval=100, frames=len(state_history) - 1)

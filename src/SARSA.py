@@ -51,7 +51,7 @@ class SARSA:
         visualize.plot_steps_per_episode(self.steps_per_episode)
         visualize.plot_epsilon(self.agent.epsilon_history)
 
-        if parameters.VISUALIZE_GAMES:
+        if parameters.VISUALIZE_FINAL_GAME:
             print('Showing one episode with the greedy strategy.')
             self.agent.epsilon = 0
             steps, state_action_history = self.run_one_episode()
