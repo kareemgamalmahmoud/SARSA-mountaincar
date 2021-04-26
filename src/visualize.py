@@ -1,5 +1,5 @@
 import math
-from typing import List
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -8,8 +8,8 @@ from matplotlib.animation import FuncAnimation
 from mountaincar import MountainCar
 
 
-def animate_track() -> None:
-
+def animate_track(state_history: List[float], filename: Optional[str] = None) -> None:
+    state_history = np.array(state_history)
     fig, ax = plt.subplots(figsize=(6, 4))
     ax.set(xlim=MountainCar.position_bound, ylim=(-1.1, 1.1))
 
@@ -18,24 +18,26 @@ def animate_track() -> None:
     plt.xlabel('x')
 
     x = np.linspace(MountainCar.position_bound[0], MountainCar.position_bound[1], 91)
-    t = np.linspace(1, 100, 91)
-    y_x = y(x)
+    plt.plot(x, y(x))
 
-    plt.plot(x, y_x)
+    y_t = y(state_history)
 
-    point = ax.plot([0], [0], color='green', marker='o')[0]
+    point = ax.plot(state_history[0], y_t[0], color='green', marker='o')[0]
     point.set_data(0, 0)
 
     def animate(i):
-        point.set_data(x[i], y_x[i])
+        point.set_data(state_history[i], y_t[i])
         return point
 
-    anim = FuncAnimation(fig, animate, interval=100, frames=len(t) - 1)
+    anim = FuncAnimation(fig, animate, interval=100, frames=len(state_history) - 1)
 
     plt.tight_layout()
     plt.draw()
-    plt.show()
-    anim.save('plots/track.gif', writer='imagemagick')
+
+    if not filename:
+        plt.show()
+    else:
+        anim.save(f'models/{filename}.gif', writer='pillow')
     plt.close()
 
 
@@ -92,8 +94,3 @@ def plot_track() -> None:
 
 def y(x):
     return np.cos(3 * (x + math.pi / 2))
-
-
-if __name__ == "__main__":
-    animate_track()
-    plot_track()

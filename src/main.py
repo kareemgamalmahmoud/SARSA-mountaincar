@@ -1,7 +1,6 @@
 import glob
 import os
 
-import parameters
 from Agent import Agent
 from SARSA import SARSA
 

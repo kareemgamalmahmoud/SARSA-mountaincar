@@ -36,7 +36,7 @@ class MountainCar:
         return 1 - 2 * int(self.is_final_state())
 
     def __bound_position(self, position: float) -> float:
-        self.velocity *= int(position < MountainCar.position_bound[0])  # set velocity to zero if out of bounds
+        self.velocity *= int(position >= MountainCar.position_bound[0])  # set velocity to zero if out of bounds
         return max(MountainCar.position_bound[0], position)
 
     def __bound_velocity(self, velocity: float) -> float:

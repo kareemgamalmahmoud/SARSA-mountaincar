@@ -8,7 +8,6 @@ import tensorflow as tf
 from keras import backend as K  # noqa
 from keras.layers import Dense, Input
 from keras.models import Sequential
-from tensorflow.python.keras.backend_config import epsilon
 
 import parameters
 from mountaincar import Action, State
@@ -20,19 +19,19 @@ class Agent:
     actions: list[Action] = [-1, 0, 1]
 
     def __init__(self, model_path: Optional[str] = None) -> None:
-        self.epsilon = parameters.SARSA_EPSILON
-        self.epsilon_decay_rate = parameters.SARSA_EPSILON_DECAY
-        self.discount_factor = parameters.SARSA_DISCOUNT_FACTOR
-        self.trace_decay = parameters.SARSA_TRACE_DECAY
+        self.epsilon = parameters.EPSILON
+        self.epsilon_decay_rate = parameters.EPSILON_DECAY
+        self.discount_factor = parameters.DISCOUNT_FACTOR
+        self.trace_decay = parameters.TRACE_DECAY
         self.encoder = TileEncoder()
         self.encoder.visualize_tilings()
 
         if model_path is None:
-            self.learning_rate = parameters.SARSA_LEARNING_RATE
-            self.dimensions = parameters.SARSA_DIMENSIONS
-            self.activation_function = parameters.SARSA_ACTIVATION_FUNCTION
-            self.optimizer = parameters.SARSA_OPTIMIZER
-            self.loss_function = parameters.SARSA_LOSS_FUNCTION
+            self.learning_rate = parameters.NN_LEARNING_RATE
+            self.dimensions = parameters.NN_DIMENSIONS
+            self.activation_function = parameters.NN_ACTIVATION_FUNCTION
+            self.optimizer = parameters.NN_OPTIMIZER
+            self.loss_function = parameters.NN_LOSS_FUNCTION
 
             self.Q: Sequential = self.build_model()
         else:

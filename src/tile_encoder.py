@@ -1,8 +1,5 @@
-import sys
-
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.lines import Line2D
 
 import parameters
 
@@ -35,13 +32,10 @@ class TileEncoder:
         offset_x = (low[0] - high[0]) / (num_tilings * num_tiles[0])
         offset_y = (low[1] - high[1]) / (num_tilings * num_tiles[1])
 
-        for i in range(num_tilings):
+        for _ in range(num_tilings):
             tiling_specs.append(((num_tiles), (offset_x, offset_y)))
             offset_x -= (low[0] - high[0]) / (num_tilings * num_tiles[0])
             offset_y -= (low[1] - high[1]) / (num_tilings * num_tiles[1])
-            print(tiling_specs)
-            print(offset_x)
-            print(offset_y)
         return [self.create_tiling_grid(low, high, tiles, offsets) for tiles, offsets in tiling_specs]
 
     def discretize(self, sample, grid):
