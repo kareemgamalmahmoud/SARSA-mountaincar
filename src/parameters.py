@@ -2,13 +2,11 @@ from keras.activations import linear, relu, sigmoid, tanh  # noqa
 from keras.losses import mse  # noqa
 from keras.optimizers import SGD, Adagrad, Adam, RMSprop  # noqa
 
-VISUALIZE_GAMES = False
-FRAME_DELAY = 0.5
-RUN_TRAINING = False
 
 # RL parameters
-EPISODES = 100
-CACHING_INTERVAL = 10
+EPISODES = 1
+CACHING_INTERVAL = 1
+VISUALIZE_FINAL_GAME = True
 
 # Domain & TileEncoder parameters
 SIZE_OF_TILING_X = 4
@@ -21,7 +19,7 @@ Y_RANGE = (-0.07, 0.07)
 
 # Agent
 EPSILON = 1
-EPSILON_DECAY = 0.98
+EPSILON_DECAY = 0.96
 DISCOUNT_FACTOR = 0.92
 TRACE_DECAY = 0.9
 
