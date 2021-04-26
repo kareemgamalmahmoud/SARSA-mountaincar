@@ -85,7 +85,7 @@ class Agent:
         # return np.random.choice(range(0, 10), 1, p=action_probabilities)[0]  # ??
         raise NotImplementedError
 
-    def update(self, state: State, action: Action, reward: int, next_state: State, next_action: Action) -> None:
+    def update(self, state: State, action: Action, reward: float, next_state: State, next_action: Action) -> None:
         """Updates eligibilities, then the value function."""
 
         with tf.GradientTape(persistent=True) as tape:

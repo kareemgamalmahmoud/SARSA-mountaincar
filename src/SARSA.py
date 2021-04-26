@@ -40,12 +40,12 @@ class SARSA:
         Runs all episodes with pivotal parameters.
         Visualizes one round at the end.
         """
-        for episode in range(self.episodes):
-            print('Episode:', episode + 1)
+        for episode in range(1, self.episodes + 1):
+            print('Episode:', episode)
             steps, state_history = self.run_one_episode()
             self.steps_per_episode.append(steps)
-            if episode % parameters.CACHING_INTERVAL == 0:
-                visualize.animate_track(state_history, f'agent-{episode + 1}')
+            if episode % parameters.CACHING_INTERVAL == 0 or steps < 1000:
+                visualize.animate_track(state_history, f'agent-{episode}')
 
         print('Training completed.')
         visualize.plot_steps_per_episode(self.steps_per_episode)

@@ -1,3 +1,4 @@
+import math
 import random
 from math import cos
 from typing import Literal, Tuple, Union
@@ -33,7 +34,10 @@ class MountainCar:
         return self.position >= MountainCar.position_bound[1]
 
     def get_reward(self) -> float:
-        return self.position + 0.6 + int(self.is_final_state())
+        return self.height(self.position) + int(self.is_final_state())
+
+    def height(self, x: float) -> float:
+        return math.cos(3 * (x + math.pi / 2))
 
     def __bound_position(self, position: float) -> float:
         self.velocity *= int(position >= MountainCar.position_bound[0])  # set velocity to zero if out of bounds
