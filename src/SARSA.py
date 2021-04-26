@@ -3,7 +3,7 @@ from typing import List, Tuple
 import parameters
 import visualize
 from Agent import Agent
-from mountaincar import MountainCar
+from mountaincar import Action, MountainCar
 
 
 class SARSA:
@@ -15,7 +15,7 @@ class SARSA:
         self.simulated_world = MountainCar()
         self.steps_per_episode = []
 
-    def run_one_episode(self, max_steps: int = 1000) -> Tuple[int, List[float]]:
+    def run_one_episode(self, max_steps: int = 1000) -> Tuple[int, List[Tuple[float, Action]]]:
         self.agent.decay_epsilon()
         self.agent.reset_eligibilities()
         state, reward, done = self.simulated_world.reset()
@@ -23,7 +23,7 @@ class SARSA:
 
         done = False
         steps = 0
-        state_history = [state[0]]
+        state_action_history = [(state[0], action)]
         while not done and steps < max_steps:
             next_state, reward, done = self.simulated_world.step(action)
             next_action = self.agent.choose_epsilon_greedy(next_state)
@@ -32,8 +32,8 @@ class SARSA:
 
             state, action = next_state, next_action
             steps += 1
-            state_history.append(state[0])
-        return steps, state_history
+            state_action_history.append((state[0], action))
+        return steps, state_action_history
 
     def run(self) -> None:
         """
@@ -42,10 +42,10 @@ class SARSA:
         """
         for episode in range(1, self.episodes + 1):
             print('Episode:', episode)
-            steps, state_history = self.run_one_episode()
+            steps, state_action_history = self.run_one_episode()
             self.steps_per_episode.append(steps)
             if episode % parameters.CACHING_INTERVAL == 0 or steps < 1000:
-                visualize.animate_track(state_history, f'agent-{episode}')
+                visualize.animate_track(state_action_history, f'agent-{episode}')
 
         print('Training completed.')
         visualize.plot_steps_per_episode(self.steps_per_episode)
@@ -54,6 +54,6 @@ class SARSA:
         if parameters.VISUALIZE_GAMES:
             print('Showing one episode with the greedy strategy.')
             self.agent.epsilon = 0
-            steps, state_history = self.run_one_episode()
+            steps, state_action_history = self.run_one_episode()
             print(f'Episode completed in {steps} steps.')
-            visualize.animate_track(state_history)
+            visualize.animate_track(state_action_history)
