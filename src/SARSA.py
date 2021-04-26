@@ -20,12 +20,12 @@ class SARSA:
         done = False
         steps = 0
         while not done and steps < max_steps:
-            # next_state, reward, done = self.simulated_world.step(action)
-            # next_action = self.agent.choose_epsilon_greedy(next_state)
+            next_state, reward, done = self.simulated_world.step(action)
+            next_action = self.agent.choose_epsilon_greedy(next_state)
 
-            # self.agent.update(state, action, reward, next_state, next_action)
+            self.agent.update(state, action, reward, next_state, next_action)
 
-            # state, action = next_state, next_action
+            state, action = next_state, next_action
             steps += 1
         return steps
 

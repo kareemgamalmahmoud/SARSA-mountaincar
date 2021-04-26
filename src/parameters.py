@@ -16,7 +16,7 @@ SARSA_DISCOUNT_FACTOR = 0.9
 SARSA_TRACE_DECAY = 0.9
 
 SARSA_LEARNING_RATE = 0.01
-SARSA_LOSS_FUNCTION = mse # "A typical solution involves mean squared error as the loss function for your critic network"
+SARSA_LOSS_FUNCTION = mse  # "A typical solution involves mean squared error as the loss function for your critic network"
 SARSA_ACTIVATION_FUNCTION = linear  # linear, relu, sigmoid, or tanh
 SARSA_OPTIMIZER = Adam  # SGD, Adagrad, Adam, or RMSprop
 SARSA_DIMENSIONS = (100, 1)
@@ -28,5 +28,5 @@ MODELS_TO_BE_CACHED = 10
 SIZE_OF_TILING_X = 4
 SIZE_OF_TILING_Y = 4
 NUM_OF_TILINGS = 3
-X_RANGE = [-1.2, 0.6]
-Y_RANGE = [-0.07, 0.07] 
+X_RANGE = (-1.2, 0.6)
+Y_RANGE = (-0.07, 0.07)
