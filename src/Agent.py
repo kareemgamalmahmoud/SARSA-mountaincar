@@ -8,6 +8,7 @@ import tensorflow as tf
 from keras import backend as K  # noqa
 from keras.layers import Dense, Input
 from keras.models import Sequential
+from tensorflow.python.keras.backend_config import epsilon
 
 import parameters
 from mountaincar import Action, State
@@ -72,6 +73,10 @@ class Agent:
         self.name = 'Agent-e' + model_path.replace('.h5', '')
         self.Q = tf.keras.models.load_model(f'{model_path}', compile=False)  # type: ignore
 
+    def decay_epsilon(self) -> None:
+        self.epsilon *= self.epsilon_decay_rate
+        self.epsilon_history.append(self.epsilon)
+
     def choose_epsilon_greedy(self, state: State) -> Action:
         """Epsilon-greedy action selection function."""
         if random.random() < self.epsilon:
@@ -118,9 +123,6 @@ class Agent:
         self.eligibilities = []
         for weights in self.Q.trainable_weights:
             self.eligibilities.append(tf.zeros(weights.shape))
-
-    def exit(self) -> None:
-        pass
 
     def __str__(self) -> str:
         return self.name

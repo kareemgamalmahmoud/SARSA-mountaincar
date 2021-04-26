@@ -13,6 +13,7 @@ class SARSA:
         self.steps_per_episode = []
 
     def run_one_episode(self, max_steps: int = 1000) -> int:
+        self.agent.decay_epsilon()
         self.agent.reset_eligibilities()
         state, reward, done = self.simulated_world.reset()
         action = self.agent.choose_epsilon_greedy(state)
@@ -41,7 +42,7 @@ class SARSA:
 
         print('Training completed.')
         visualize.plot_steps_per_episode(self.steps_per_episode)
-        self.agent.exit()
+        visualize.plot_epsilon(self.agent.epsilon_history)
 
         if parameters.VISUALIZE_GAMES:
             print('Showing one episode with the greedy strategy.')

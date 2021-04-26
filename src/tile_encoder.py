@@ -103,3 +103,4 @@ class TileEncoder:
         plt.xlim(self.low[0], self.high[0])
         plt.ylim(self.low[1], self.high[1])
         plt.savefig('plots/tiles.png')
+        plt.close()
