@@ -6,7 +6,7 @@ import parameters
 
 Action = Union[Literal[-1], Literal[0], Literal[1]]
 State = Tuple[float, float]
-Output = Tuple[State, int, bool]
+Output = Tuple[State, float, bool]
 
 
 class MountainCar:
@@ -22,7 +22,7 @@ class MountainCar:
     def reset(self) -> Output:
         self.position = -0.6 + random.random() * 0.2
         self.velocity = 0.0
-        return (self.position, self.velocity), -1, False
+        return (self.position, self.velocity), -1.0, False
 
     def step(self, action: Action) -> Output:
         self.velocity = self.__bound_velocity(self.velocity + 0.001 * action - 0.0025 * cos(3 * self.position))
@@ -32,8 +32,8 @@ class MountainCar:
     def is_final_state(self) -> bool:
         return self.position >= MountainCar.position_bound[1]
 
-    def get_reward(self) -> int:
-        return 1 - 2 * int(self.is_final_state())
+    def get_reward(self) -> float:
+        return self.position + 0.6 + int(self.is_final_state())
 
     def __bound_position(self, position: float) -> float:
         self.velocity *= int(position >= MountainCar.position_bound[0])  # set velocity to zero if out of bounds

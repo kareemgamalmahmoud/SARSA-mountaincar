@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import random
-from typing import Optional
 
 import numpy as np
 import tensorflow as tf
@@ -18,7 +17,7 @@ class Agent:
 
     actions: list[Action] = [-1, 0, 1]
 
-    def __init__(self, model_path: Optional[str] = None) -> None:
+    def __init__(self) -> None:
         self.epsilon = parameters.EPSILON
         self.epsilon_decay_rate = parameters.EPSILON_DECAY
         self.discount_factor = parameters.DISCOUNT_FACTOR
@@ -26,16 +25,13 @@ class Agent:
         self.encoder = TileEncoder()
         self.encoder.visualize_tilings()
 
-        if model_path is None:
-            self.learning_rate = parameters.NN_LEARNING_RATE
-            self.dimensions = parameters.NN_DIMENSIONS
-            self.activation_function = parameters.NN_ACTIVATION_FUNCTION
-            self.optimizer = parameters.NN_OPTIMIZER
-            self.loss_function = parameters.NN_LOSS_FUNCTION
+        self.learning_rate = parameters.NN_LEARNING_RATE
+        self.dimensions = parameters.NN_DIMENSIONS
+        self.activation_function = parameters.NN_ACTIVATION_FUNCTION
+        self.optimizer = parameters.NN_OPTIMIZER
+        self.loss_function = parameters.NN_LOSS_FUNCTION
 
-            self.Q: Sequential = self.build_model()
-        else:
-            self.load(model_path)
+        self.Q: Sequential = self.build_model()
 
         self.reset_eligibilities()
         self.epsilon_history = []
@@ -44,7 +40,6 @@ class Agent:
         """
         Builds a neural network model with the provided dimensions and learning rate
         """
-        self.name = 'Training model'
         input_dim, *hidden_dims, output_dim = self.dimensions
 
         assert output_dim == 1, 'Output dimension must be 1'
@@ -64,13 +59,6 @@ class Agent:
         )
         model.summary()
         return model
-
-    def save(self, model_path: str) -> None:
-        self.Q.save(model_path)
-
-    def load(self, model_path: str) -> None:
-        self.name = 'Agent-e' + model_path.replace('.h5', '')
-        self.Q = tf.keras.models.load_model(f'{model_path}', compile=False)  # type: ignore
 
     def decay_epsilon(self) -> None:
         self.epsilon *= self.epsilon_decay_rate
@@ -122,12 +110,6 @@ class Agent:
         self.eligibilities = []
         for weights in self.Q.trainable_weights:
             self.eligibilities.append(tf.zeros(weights.shape))
-
-    def __str__(self) -> str:
-        return self.name
-
-    def __repr__(self) -> str:
-        return self.name
 
 
 # def softmax_v2(x: int, temperature: float = 1.0) -> float:
