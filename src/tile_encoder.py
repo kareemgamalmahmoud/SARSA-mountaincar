@@ -10,10 +10,11 @@ import parameters
 class TileEncoder:
 
     def __init__(self):
-        self.size = (parameters.SIZE_OF_TILING_X, parameters.SIZE_OF_TILING_Y)   # Number of tiles along each corresponding dimension --> (number along x, number along y).
-        self.num_of_tilings = parameters.NUM_OF_TILINGS + 1
-        self.low = [parameters.X_RANGE[0], parameters.Y_RANGE[0]]            # Lower bounds for each dimension of the continuous space --> (x, y).
-        self.high = [parameters.X_RANGE[1], parameters.Y_RANGE[1]]           # Upper bounds for each dimension of the continuous space --> (x, y).
+        self.size = (parameters.SIZE_OF_TILING_X, parameters.SIZE_OF_TILING_Y)  # Number of tiles along each corresponding dimension --> (number along x, number along y).
+        self.num_of_tilings = parameters.NUM_OF_TILINGS
+        self.low = [parameters.X_RANGE[0], parameters.Y_RANGE[0]]  # Lower bounds for each dimension of the continuous space --> (x, y).
+        self.high = [parameters.X_RANGE[1], parameters.Y_RANGE[1]]  # Upper bounds for each dimension of the continuous space --> (x, y).
+        self.tilings = self.create_tilings()
 
     def create_tiling_grid(self, low, high, num_tiles=(10, 10), offsets=(0.0, 0.0)):
         """Define a uniformly-spaced grid that can be used for tile-coding a space.
@@ -54,7 +55,7 @@ class TileEncoder:
     def coordinate_to_index(self, x, y):
         return x + y * self.size[0]
 
-    def tile_encode(self, state, tilings, flatten=False):
+    def tile_encode(self, state, tilings=None, flatten=False):
         """Encode given sample using tile-coding.
 
         Parameters
@@ -67,19 +68,23 @@ class TileEncoder:
         -------
         encoded_sample : A list of binary vectors, one for each tiling, or flattened into one.
         """
-        # TODO: Implement this
-        tiling_features = [[0] * (self.size[0] ** 2)] * self.size[0]
+        if tilings is None:
+            tilings = self.tilings
+
+        tiling_features = [[0] * (self.size[0] * self.size[1])] * self.num_of_tilings
         encoded_state = [self.discretize(state, grid) for grid in tilings]
 
         for i in range(len(encoded_state[0])):
             index = self.coordinate_to_index(encoded_state[i][0], encoded_state[i][1])
             tiling_features[i][index] = 1
         feature_vector = (np.array(tiling_features)).flatten()
-
         return feature_vector
 
     def visualize_tilings(self, tilings):
         """Plot each tiling as a grid."""
+        if tilings is None:
+            tilings = self.tilings
+
         prop_cycle = plt.rcParams['axes.prop_cycle']
         colors = prop_cycle.by_key()['color']
         linestyles = ['-', '--', ':']

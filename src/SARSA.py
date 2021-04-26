@@ -13,9 +13,9 @@ class SARSA:
         self.steps_per_episode = []
 
     def run_one_episode(self, max_steps: int = 1000) -> int:
-        # self.agent.reset_eligibilities()
-        # state, reward, done = self.simulated_world.reset()
-        # action = self.agent.choose_epsilon_greedy(state)
+        self.agent.reset_eligibilities()
+        state, reward, done = self.simulated_world.reset()
+        action = self.agent.choose_epsilon_greedy(state)
 
         done = False
         steps = 0

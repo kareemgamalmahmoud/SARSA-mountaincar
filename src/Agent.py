@@ -11,6 +11,7 @@ from keras.models import Sequential
 
 import parameters
 from mountaincar import Action, State
+from tile_encoder import TileEncoder
 
 
 class Agent:
@@ -22,6 +23,7 @@ class Agent:
         self.epsilon_decay_rate = parameters.SARSA_EPSILON_DECAY
         self.discount_factor = parameters.SARSA_DISCOUNT_FACTOR
         self.trace_decay = parameters.SARSA_TRACE_DECAY
+        self.encoder = TileEncoder()
 
         if model_path is None:
             self.learning_rate = parameters.SARSA_LEARNING_RATE
@@ -47,7 +49,8 @@ class Agent:
         assert output_dim == 1, 'Output dimension must be 1'
 
         model = Sequential()
-        model.add(Input(shape=(input_dim,)))
+        print(input_dim)
+        model.add(Input(shape=(input_dim + 1,)))
 
         for dimension in hidden_dims:
             model.add(Dense(dimension, activation=self.activation_function))
@@ -78,10 +81,10 @@ class Agent:
         return random.choice(Agent.actions)
 
     def choose_greedy(self, state: State) -> Action:
-        action_probabilities = []
+        actions = []
         for action in Agent.actions:
-            action_probabilities.append(float(self.Q(tf.convert_to_tensor([state, action]))))  # type: ignore
-        return Agent.actions[np.argmax(action_probabilities)]
+            actions.append(float(self.Q(tf.convert_to_tensor([np.hstack((self.encoder.tile_encode(state), [action]))]))))  # type: ignore
+        return Agent.actions[np.argmax(actions)]
 
     def choose_stochastic(self, state: State, temperature: int = 1) -> Action:
         # action_probabilities = np.array(self.Q(tf.convert_to_tensor([state])))
@@ -93,8 +96,8 @@ class Agent:
         """Updates eligibilities, then the value function."""
 
         with tf.GradientTape(persistent=True) as tape:
-            target = reward + self._discount_factor * self.Q(tf.convert_to_tensor([next_state, next_action]))  # type: ignore
-            prediction = self.Q(tf.convert_to_tensor([state, action]))
+            target = reward + tf.multiply(self.discount_factor, self.Q(tf.convert_to_tensor([*self.encoder.tile_encode(next_state), next_action])))
+            prediction = self.Q(tf.convert_to_tensor([*self.encoder.tile_encode(state), action]))
             loss = self.Q.compiled_loss(target, prediction)
             td_error = target - prediction
 
@@ -122,5 +125,5 @@ class Agent:
         return self.name
 
 
-def softmax_v2(x: int, temperature: float = 1.0) -> float:
-    return np.exp(x / temperature) / sum(np.exp(x / temperature))
+# def softmax_v2(x: int, temperature: float = 1.0) -> float:
+#     return np.exp(x / temperature) / sum(np.exp(x / temperature))
