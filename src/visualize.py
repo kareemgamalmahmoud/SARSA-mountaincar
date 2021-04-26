@@ -4,6 +4,7 @@ from typing import List, Optional, Tuple
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.animation import FuncAnimation
+from matplotlib.patches import FancyArrowPatch
 
 from mountaincar import Action, MountainCar
 
@@ -24,10 +25,14 @@ def animate_track(state_action_history: List[Tuple[float, Action]], filename: Op
     y_t = y(state_history)
 
     point = ax.plot(state_history[0], y_t[0], color='green', marker='o')[0]
+    a = ax.add_patch(FancyArrowPatch(state_history[0], y_t[0], -0.1, 0))
+
     point.set_data(0, 0)
 
     def animate(i):
+        ax.patches.pop(0)
         point.set_data(state_history[i], y_t[i])
+        a = ax.add_patch(FancyArrowPatch(state_history[0], y_t[0], -0.1, 0))
         return point
 
     anim = FuncAnimation(fig, animate, interval=100, frames=len(state_history) - 1)
