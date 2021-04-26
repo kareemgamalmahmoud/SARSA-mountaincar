@@ -10,7 +10,7 @@ from mountaincar import Action, MountainCar
 
 def animate_track(state_action_history: List[Tuple[float, Action]], filename: Optional[str] = None) -> None:
     state_action_history, action_history = zip(*state_action_history)
-    state_history, action_history = np.array(state_action_history), np.array(action_history)
+    state_history, action_history = np.array(state_history), np.array(action_history)
     fig, ax = plt.subplots(figsize=(6, 4))
     ax.set(xlim=MountainCar.position_bound, ylim=(-1.1, 1.1))
 
@@ -21,16 +21,16 @@ def animate_track(state_action_history: List[Tuple[float, Action]], filename: Op
     x = np.linspace(MountainCar.position_bound[0], MountainCar.position_bound[1], 91)
     plt.plot(x, y(x))
 
-    y_t = y(state_action_history)
+    y_t = y(state_history)
 
-    point = ax.plot(state_action_history[0], y_t[0], color='green', marker='o')[0]
+    point = ax.plot(state_history[0], y_t[0], color='green', marker='o')[0]
     point.set_data(0, 0)
 
     def animate(i):
-        point.set_data(state_action_history[i], y_t[i])
+        point.set_data(state_history[i], y_t[i])
         return point
 
-    anim = FuncAnimation(fig, animate, interval=100, frames=len(state_action_history) - 1)
+    anim = FuncAnimation(fig, animate, interval=100, frames=len(state_history) - 1)
 
     plt.tight_layout()
     plt.draw()
