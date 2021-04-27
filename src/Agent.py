@@ -10,6 +10,7 @@ from keras.models import Sequential
 import parameters
 from MountainCar import Action, State
 from TileEncoder import TileEncoder
+import visualize
 
 
 class Agent:
@@ -22,7 +23,7 @@ class Agent:
         self.discount_factor = parameters.DISCOUNT_FACTOR
         self.trace_decay = parameters.TRACE_DECAY
         self.encoder = TileEncoder()
-        self.encoder.visualize_tilings()
+        visualize.visualize_tilings(self.encoder.tilings)
 
         self.learning_rate = parameters.NN_LEARNING_RATE
         self.dimensions = parameters.NN_DIMENSIONS
@@ -53,7 +54,8 @@ class Agent:
         model.add(Dense(units=1, activation='linear'))
 
         model.compile(
-            optimizer=(self.optimizer(learning_rate=self.learning_rate) if self.learning_rate is not None else self.optimizer()),
+            optimizer=(self.optimizer(learning_rate=self.learning_rate)
+                       if self.learning_rate is not None else self.optimizer()),
             loss=self.loss_function
         )
         model.summary()
@@ -75,7 +77,8 @@ class Agent:
     def choose_greedy(self, state: State) -> Action:
         actions = []
         for action in Agent.actions:
-            actions.append(float(self.Q(tf.convert_to_tensor([np.hstack((self.encoder.tile_encode(state), action))]))))  # type: ignore
+            actions.append(float(self.Q(tf.convert_to_tensor(
+                [np.hstack((self.encoder.tile_encode(state), action))]))))  # type: ignore
         return Agent.actions[np.argmax(actions)]
 
     def choose_stochastic(self, state: State, temperature: int = 1) -> Action:
@@ -88,8 +91,10 @@ class Agent:
         """Updates eligibilities, then the value function."""
 
         with tf.GradientTape(persistent=True) as tape:
-            target = reward + tf.multiply(self.discount_factor, self.Q(tf.convert_to_tensor([np.hstack((self.encoder.tile_encode(next_state), next_action))])))  # type: ignore
-            prediction = self.Q(tf.convert_to_tensor([np.hstack((self.encoder.tile_encode(state), action))]))  # type: ignore
+            target = reward + tf.multiply(self.discount_factor, self.Q(tf.convert_to_tensor(
+                [np.hstack((self.encoder.tile_encode(next_state), next_action))])))  # type: ignore
+            prediction = self.Q(tf.convert_to_tensor(
+                [np.hstack((self.encoder.tile_encode(state), action))]))  # type: ignore
             loss = self.Q.compiled_loss(target, prediction)
             td_error = target - prediction
 

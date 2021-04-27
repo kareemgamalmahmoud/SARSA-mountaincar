@@ -12,6 +12,7 @@ from matplotlib.animation import FuncAnimation
 from matplotlib.patches import ArrowStyle, FancyArrowPatch
 
 from MountainCar import Action, MountainCar
+import parameters
 
 
 def animate_track(state_action_history: List[Tuple[float, Action]], filename: Optional[str] = None) -> None:
@@ -105,3 +106,32 @@ def plot_track() -> None:
 
 def y(x):
     return np.cos(3 * (x + math.pi / 2))
+
+
+def visualize_tilings(tilings=None) -> None:
+    # Lower bounds for each dimension of the continuous space --> (x, y).
+    low = [parameters.X_RANGE[0], parameters.Y_RANGE[0]]
+    # Upper bounds for each dimension of the continuous space --> (x, y).
+    high = [parameters.X_RANGE[1], parameters.Y_RANGE[1]]
+
+    prop_cycle = plt.rcParams['axes.prop_cycle']
+    colors = prop_cycle.by_key()['color']
+    linestyles = ['-', '--', ':']
+    legend_lines = []
+
+    fig, ax = plt.subplots(figsize=(10, 10))
+    for i, grid in enumerate(tilings):
+        line = None
+        for x in grid[0]:
+            line = ax.axvline(x=x, color=colors[i % len(colors)], linestyle=linestyles[i % len(linestyles)], label=i)
+        for y in grid[1]:
+            line = ax.axhline(y=y, color=colors[i % len(colors)], linestyle=linestyles[i % len(linestyles)])
+        legend_lines.append(line)
+    ax.grid(False)
+    ax.legend(legend_lines, ["Tiling #{}".format(t)
+              for t in range(len(legend_lines))], facecolor='white', framealpha=0.9)
+    ax.set_title("Tilings")
+    plt.xlim(low[0], high[0])
+    plt.ylim(low[1], high[1])
+    plt.savefig('plots/tiles.png')
+    plt.close()

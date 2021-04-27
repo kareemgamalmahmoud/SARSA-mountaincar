@@ -7,10 +7,13 @@ import parameters
 class TileEncoder:
 
     def __init__(self):
-        self.size = (parameters.SIZE_OF_TILING_X, parameters.SIZE_OF_TILING_Y)  # Number of tiles along each corresponding dimension --> (number along x, number along y).
+        # Number of tiles along each corresponding dimension --> (number along x, number along y).
+        self.size = (parameters.SIZE_OF_TILING_X, parameters.SIZE_OF_TILING_Y)
         self.num_of_tilings = parameters.NUM_OF_TILINGS
-        self.low = [parameters.X_RANGE[0], parameters.Y_RANGE[0]]  # Lower bounds for each dimension of the continuous space --> (x, y).
-        self.high = [parameters.X_RANGE[1], parameters.Y_RANGE[1]]  # Upper bounds for each dimension of the continuous space --> (x, y).
+        # Lower bounds for each dimension of the continuous space --> (x, y).
+        self.low = [parameters.X_RANGE[0], parameters.Y_RANGE[0]]
+        # Upper bounds for each dimension of the continuous space --> (x, y).
+        self.high = [parameters.X_RANGE[1], parameters.Y_RANGE[1]]
         self.tilings = self.create_tilings()
 
     def create_tiling_grid(self, low, high, num_tiles=(10, 10), offsets=(0.0, 0.0)):
@@ -19,7 +22,8 @@ class TileEncoder:
         -------
         grid :      A list of arrays containing split points for each dimension.
         """
-        grid = [np.linspace(low[dim], high[dim], num_tiles[dim] + 1)[1:-1] + offsets[dim] for dim in range(len(num_tiles))]
+        grid = [np.linspace(low[dim], high[dim], num_tiles[dim] + 1)[1:-1] + offsets[dim]
+                for dim in range(len(num_tiles))]
         return grid
 
     def create_tilings(self):
@@ -72,29 +76,3 @@ class TileEncoder:
             index = self.coordinate_to_index(encoded_state[i][0], encoded_state[i][1])
             tiling_features[i][index] = 1
         return np.array(tiling_features).flatten()
-
-    def visualize_tilings(self, tilings=None):
-        """Plot each tiling as a grid."""
-        if tilings is None:
-            tilings = self.tilings
-
-        prop_cycle = plt.rcParams['axes.prop_cycle']
-        colors = prop_cycle.by_key()['color']
-        linestyles = ['-', '--', ':']
-        legend_lines = []
-
-        fig, ax = plt.subplots(figsize=(10, 10))
-        for i, grid in enumerate(tilings):
-            line = None
-            for x in grid[0]:
-                line = ax.axvline(x=x, color=colors[i % len(colors)], linestyle=linestyles[i % len(linestyles)], label=i)
-            for y in grid[1]:
-                line = ax.axhline(y=y, color=colors[i % len(colors)], linestyle=linestyles[i % len(linestyles)])
-            legend_lines.append(line)
-        ax.grid(False)
-        ax.legend(legend_lines, ["Tiling #{}".format(t) for t in range(len(legend_lines))], facecolor='white', framealpha=0.9)
-        ax.set_title("Tilings")
-        plt.xlim(self.low[0], self.high[0])
-        plt.ylim(self.low[1], self.high[1])
-        plt.savefig('plots/tiles.png')
-        plt.close()
