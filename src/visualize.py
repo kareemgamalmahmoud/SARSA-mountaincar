@@ -12,7 +12,6 @@ from matplotlib.animation import FuncAnimation
 from matplotlib.patches import ArrowStyle, FancyArrowPatch
 
 from MountainCar import Action, MountainCar
-import parameters
 
 
 def animate_track(state_action_history: List[Tuple[float, Action]], filename: Optional[str] = None) -> None:
@@ -108,11 +107,7 @@ def y(x):
     return np.cos(3 * (x + math.pi / 2))
 
 
-def visualize_tilings(tilings=None) -> None:
-    # Lower bounds for each dimension of the continuous space --> (x, y).
-    low = [parameters.X_RANGE[0], parameters.Y_RANGE[0]]
-    # Upper bounds for each dimension of the continuous space --> (x, y).
-    high = [parameters.X_RANGE[1], parameters.Y_RANGE[1]]
+def visualize_tilings(tilings, low, high) -> None:
 
     prop_cycle = plt.rcParams['axes.prop_cycle']
     colors = prop_cycle.by_key()['color']

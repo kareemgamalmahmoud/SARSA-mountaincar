@@ -12,6 +12,7 @@ class SARSA:
         self.episodes = parameters.EPISODES
         self.caching_interval = parameters.CACHING_INTERVAL
         self.agent = Agent()
+        visualize.visualize_tilings(self.agent.encoder.tilings, self.agent.encoder.low, self.agent.encoder.high)
         self.simulated_world = MountainCar()
         self.steps_per_episode = []
 

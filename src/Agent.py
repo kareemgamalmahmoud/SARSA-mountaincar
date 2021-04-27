@@ -23,7 +23,6 @@ class Agent:
         self.discount_factor = parameters.DISCOUNT_FACTOR
         self.trace_decay = parameters.TRACE_DECAY
         self.encoder = TileEncoder()
-        visualize.visualize_tilings(self.encoder.tilings)
 
         self.learning_rate = parameters.NN_LEARNING_RATE
         self.dimensions = parameters.NN_DIMENSIONS
