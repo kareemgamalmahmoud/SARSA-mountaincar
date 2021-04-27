@@ -1,3 +1,8 @@
+# type: ignore
+""" visualize.py
+    Utility module for plotting with matplotlib
+"""
+
 import math
 from typing import List, Optional, Tuple
 
@@ -6,7 +11,7 @@ import numpy as np
 from matplotlib.animation import FuncAnimation
 from matplotlib.patches import FancyArrowPatch, ArrowStyle
 
-from mountaincar import Action, MountainCar
+from MountainCar import Action, MountainCar
 
 
 def animate_track(state_action_history: List[Tuple[float, Action]], filename: Optional[str] = None) -> None:
@@ -25,14 +30,14 @@ def animate_track(state_action_history: List[Tuple[float, Action]], filename: Op
     y_t = y(state_history)
 
     point = ax.plot(state_history[0], y_t[0], color='green', marker='o')[0]
-    a = ax.add_patch(FancyArrowPatch((state_history[0], y_t[0]), (state_history[0] + 0.1 * action_history[0], y_t[0])))
+    a = ax.add_patch(FancyArrowPatch((state_history[0], y_t[0]), (state_history[0] + 0.1 * action_history[0], y_t[0])))  # noqa
 
     point.set_data(0, 0)
 
     def animate(i):
         ax.patches.pop(0)
         point.set_data(state_history[i], y_t[i])
-        a = ax.add_patch(FancyArrowPatch((state_history[i], y_t[i]), (state_history[i] + 0.1 * action_history[i], y_t[i]), color='green', arrowstyle=ArrowStyle("->", head_length=1.5, head_width=1.5)))
+        a = ax.add_patch(FancyArrowPatch((state_history[i], y_t[i]), (state_history[i] + 0.1 * action_history[i], y_t[i]), color='green', arrowstyle=ArrowStyle("->", head_length=1.5, head_width=1.5)))  # noqa
         return point
 
     anim = FuncAnimation(fig, animate, interval=100, frames=len(state_history) - 1)

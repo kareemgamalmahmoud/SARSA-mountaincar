@@ -3,7 +3,7 @@ from typing import List, Tuple
 import parameters
 import visualize
 from Agent import Agent
-from mountaincar import Action, MountainCar
+from MountainCar import Action, MountainCar
 
 
 class SARSA:

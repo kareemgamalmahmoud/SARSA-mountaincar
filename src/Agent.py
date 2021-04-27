@@ -1,6 +1,5 @@
-from __future__ import annotations
-
 import random
+from typing import List
 
 import numpy as np
 import tensorflow as tf
@@ -9,13 +8,13 @@ from keras.layers import Dense, Input
 from keras.models import Sequential
 
 import parameters
-from mountaincar import Action, State
-from tile_encoder import TileEncoder
+from MountainCar import Action, State
+from TileEncoder import TileEncoder
 
 
 class Agent:
 
-    actions: list[Action] = [-1, 0, 1]
+    actions: List[Action] = [-1, 0, 1]
 
     def __init__(self) -> None:
         self.epsilon = parameters.EPSILON
