@@ -2,7 +2,6 @@ from keras.activations import linear, relu, sigmoid, tanh  # noqa
 from keras.losses import mse  # noqa
 from keras.optimizers import SGD, Adagrad, Adam, RMSprop  # noqa
 
-
 # RL parameters
 EPISODES = 1
 CACHING_INTERVAL = 1

@@ -9,7 +9,7 @@ from typing import List, Optional, Tuple
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.animation import FuncAnimation
-from matplotlib.patches import FancyArrowPatch, ArrowStyle
+from matplotlib.patches import ArrowStyle, FancyArrowPatch
 
 from MountainCar import Action, MountainCar
 
@@ -76,7 +76,7 @@ def plot_loss(loss_history: List[int]) -> None:
 def plot_epsilon(epsilon_history) -> None:
     plt.title('Epsilon')
     plt.xlabel('Time step')
-    plt.ylabel('$\epsilon$')
+    plt.ylabel('$\epsilon$')  # noqa
 
     x = [i for i in range(len(epsilon_history))]
     explore_history = [y for y in epsilon_history if y > 0.5]
