@@ -1,6 +1,5 @@
-from __future__ import annotations
-
 import random
+from typing import List
 
 import numpy as np
 import tensorflow as tf
@@ -9,13 +8,13 @@ from keras.layers import Dense, Input
 from keras.models import Sequential
 
 import parameters
-from mountaincar import Action, State
-from tile_encoder import TileEncoder
+from MountainCar import Action, State
+from TileEncoder import TileEncoder
 
 
 class Agent:
 
-    actions: list[Action] = [-1, 0, 1]
+    actions: List[Action] = [-1, 0, 1]
 
     def __init__(self) -> None:
         self.epsilon = parameters.EPSILON
@@ -31,7 +30,7 @@ class Agent:
         self.optimizer = parameters.NN_OPTIMIZER
         self.loss_function = parameters.NN_LOSS_FUNCTION
 
-        self.Q: Sequential = self.build_model()
+        self.Q = self.build_model()
 
         self.reset_eligibilities()
         self.epsilon_history = []
@@ -45,8 +44,7 @@ class Agent:
         assert output_dim == 1, 'Output dimension must be 1'
 
         model = Sequential()
-        print(input_dim)
-        model.add(Input(shape=(input_dim + 1,)))
+        model.add(Input(shape=(input_dim + 1,)))  # +1 for the action a: Q(s, a)
 
         for dimension in hidden_dims:
             model.add(Dense(dimension, activation=self.activation_function))
@@ -64,12 +62,6 @@ class Agent:
         self.epsilon *= self.epsilon_decay_rate
         self.epsilon_history.append(self.epsilon)
 
-    def choose_epsilon_greedy(self, state: State) -> Action:
-        """Epsilon-greedy action selection function."""
-        if random.random() < self.epsilon:
-            return self.choose_uniform()
-        return self.choose_greedy(state)
-
     def choose_uniform(self) -> Action:
         return random.choice(Agent.actions)
 
@@ -79,11 +71,11 @@ class Agent:
             actions.append(float(self.Q(tf.convert_to_tensor([np.hstack((self.encoder.tile_encode(state), action))]))))  # type: ignore
         return Agent.actions[np.argmax(actions)]
 
-    def choose_stochastic(self, state: State, temperature: int = 1) -> Action:
-        # action_probabilities = np.array(self.Q(tf.convert_to_tensor([state])))
-        # action_probabilities = softmax_v2(action_probabilities, temperature)
-        # return np.random.choice(range(0, 10), 1, p=action_probabilities)[0]  # ??
-        raise NotImplementedError
+    def choose_epsilon_greedy(self, state: State) -> Action:
+        """Epsilon-greedy action selection function."""
+        if random.random() < self.epsilon:
+            return self.choose_uniform()
+        return self.choose_greedy(state)
 
     def update(self, state: State, action: Action, reward: float, next_state: State, next_action: Action) -> None:
         """Updates eligibilities, then the value function."""
@@ -110,7 +102,3 @@ class Agent:
         self.eligibilities = []
         for weights in self.Q.trainable_weights:
             self.eligibilities.append(tf.zeros(weights.shape))
-
-
-# def softmax_v2(x: int, temperature: float = 1.0) -> float:
-#     return np.exp(x / temperature) / sum(np.exp(x / temperature))
