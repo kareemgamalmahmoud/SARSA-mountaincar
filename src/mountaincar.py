@@ -34,7 +34,7 @@ class MountainCar:
         return self.position >= MountainCar.position_bound[1]
 
     def get_reward(self) -> float:
-        return abs(self.velocity)*10 + self.position + 10*int(self.is_final_state())
+        return -1 + 2 * int(self.is_final_state())
 
     def height(self, x: float) -> float:
         return math.cos(3 * (x + math.pi / 2))
