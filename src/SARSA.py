@@ -3,7 +3,7 @@ from typing import List, Tuple
 import parameters
 import visualize
 from Agent import Agent
-from MountainCar import Action, MountainCar
+from mountaincar import Action, MountainCar
 
 
 class SARSA:
@@ -44,7 +44,7 @@ class SARSA:
             print('Episode:', episode)
             steps, state_action_history = self.run_one_episode()
             self.steps_per_episode.append(steps)
-            if episode % parameters.CACHING_INTERVAL == 0:
+            if episode % parameters.CACHING_INTERVAL == 0 or steps < 1000:
                 visualize.animate_track(state_action_history, f'agent-{episode}')
 
         print('Training completed.')
