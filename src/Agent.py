@@ -10,7 +10,6 @@ from keras.models import Sequential
 import parameters
 from MountainCar import Action, State
 from TileEncoder import TileEncoder
-import visualize
 
 
 class Agent:
@@ -30,7 +29,7 @@ class Agent:
         self.optimizer = parameters.NN_OPTIMIZER
         self.loss_function = parameters.NN_LOSS_FUNCTION
 
-        self.Q: Sequential = self.build_model()
+        self.Q = self.build_model()
 
         self.reset_eligibilities()
         self.epsilon_history = []
@@ -44,7 +43,6 @@ class Agent:
         assert output_dim == 1, 'Output dimension must be 1'
 
         model = Sequential()
-        print(input_dim)
         model.add(Input(shape=(input_dim + 1,)))
 
         for dimension in hidden_dims:
@@ -53,8 +51,7 @@ class Agent:
         model.add(Dense(units=1, activation='linear'))
 
         model.compile(
-            optimizer=(self.optimizer(learning_rate=self.learning_rate)
-                       if self.learning_rate is not None else self.optimizer()),
+            optimizer=(self.optimizer(learning_rate=self.learning_rate) if self.learning_rate is not None else self.optimizer()),
             loss=self.loss_function
         )
         model.summary()
@@ -76,24 +73,15 @@ class Agent:
     def choose_greedy(self, state: State) -> Action:
         actions = []
         for action in Agent.actions:
-            actions.append(float(self.Q(tf.convert_to_tensor(
-                [np.hstack((self.encoder.tile_encode(state), action))]))))  # type: ignore
+            actions.append(float(self.Q(tf.convert_to_tensor([np.hstack((self.encoder.tile_encode(state), action))]))))  # type: ignore
         return Agent.actions[np.argmax(actions)]
-
-    def choose_stochastic(self, state: State, temperature: int = 1) -> Action:
-        # action_probabilities = np.array(self.Q(tf.convert_to_tensor([state])))
-        # action_probabilities = softmax_v2(action_probabilities, temperature)
-        # return np.random.choice(range(0, 10), 1, p=action_probabilities)[0]  # ??
-        raise NotImplementedError
 
     def update(self, state: State, action: Action, reward: float, next_state: State, next_action: Action) -> None:
         """Updates eligibilities, then the value function."""
 
         with tf.GradientTape(persistent=True) as tape:
-            target = reward + tf.multiply(self.discount_factor, self.Q(tf.convert_to_tensor(
-                [np.hstack((self.encoder.tile_encode(next_state), next_action))])))  # type: ignore
-            prediction = self.Q(tf.convert_to_tensor(
-                [np.hstack((self.encoder.tile_encode(state), action))]))  # type: ignore
+            target = reward + tf.multiply(self.discount_factor, self.Q(tf.convert_to_tensor([np.hstack((self.encoder.tile_encode(next_state), next_action))])))  # type: ignore
+            prediction = self.Q(tf.convert_to_tensor([np.hstack((self.encoder.tile_encode(state), action))]))  # type: ignore
             loss = self.Q.compiled_loss(target, prediction)
             td_error = target - prediction
 
@@ -113,7 +101,3 @@ class Agent:
         self.eligibilities = []
         for weights in self.Q.trainable_weights:
             self.eligibilities.append(tf.zeros(weights.shape))
-
-
-# def softmax_v2(x: int, temperature: float = 1.0) -> float:
-#     return np.exp(x / temperature) / sum(np.exp(x / temperature))
